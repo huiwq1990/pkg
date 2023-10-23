@@ -19,6 +19,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -186,8 +187,13 @@ func (i *Impersonator) getKubeConfig(ctx context.Context) ([]byte, error) {
 		return nil, fmt.Errorf("KubeConfig is nil")
 	}
 
+	ns := i.namespace
+	if tmp := os.Getenv("KUBECONFIG_SECRET_NAMESPACE"); len(tmp) != 0 {
+		ns = tmp
+	}
+
 	secretName := types.NamespacedName{
-		Namespace: i.namespace,
+		Namespace: tmp,
 		Name:      i.kubeConfigRef.SecretRef.Name,
 	}
 
