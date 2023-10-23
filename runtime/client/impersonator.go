@@ -193,7 +193,7 @@ func (i *Impersonator) getKubeConfig(ctx context.Context) ([]byte, error) {
 	}
 
 	secretName := types.NamespacedName{
-		Namespace: tmp,
+		Namespace: ns,
 		Name:      i.kubeConfigRef.SecretRef.Name,
 	}
 
